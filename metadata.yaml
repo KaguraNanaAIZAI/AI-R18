@@ -1,0 +1,17 @@
+name: astrbot_plugin_unfilter
+display_name: 成人向模式
+short_desc: 关闭框架安全模式与内容检查，并在请求/回复两端压制拒答话术，让机器人正常处理色情与成人向话题。
+desc: >-
+  三层一起改才有效：① 改写 AstrBot 配置，关掉 agent_runner.config.persona.safety_mode
+  与 content_safety 的关键词/百度审核，避免系统提示被注入 Safe Mode、避免消息被拦；
+  ② on_llm_request 在 system_prompt 末尾追加成人向创作指令，作为最后一条规则生效；
+  ③ on_decorating_result 检测拒答话术，命中后用加强指令重生成一次并替换消息。
+  附带 /nsfw on|off|status 按会话开关。
+version: 1.0.0
+author: local
+astrbot_version: ">=4.14.0"
+tags:
+  - 成人向
+  - 解除限制
+  - 人格
+  - 内容策略

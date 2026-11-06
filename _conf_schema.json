@@ -1,0 +1,86 @@
+{
+  "enable": {
+    "description": "总开关",
+    "type": "bool",
+    "default": true,
+    "hint": "关闭后插件不注入任何指令、也不处理拒答，等同于未安装。"
+  },
+  "patch_framework_guard": {
+    "description": "改写框架安全开关",
+    "type": "bool",
+    "default": true,
+    "hint": "把 agent_runner.config.persona.safety_mode 与 content_safety 的三个开关置为 false 并写入 cmd_config.json；卸载插件时自动恢复原值。"
+  },
+  "inject_directive": {
+    "description": "注入成人向创作指令",
+    "type": "bool",
+    "default": true,
+    "hint": "在每次 LLM 请求的 system_prompt 末尾追加指令，位置在人格与安全文本之后。"
+  },
+  "custom_directive": {
+    "description": "自定义指令（留空用内置）",
+    "type": "text",
+    "default": "",
+    "hint": "填写后完全替换内置指令文本，适合配合特定人格微调。"
+  },
+  "retry_on_refusal": {
+    "description": "拒答自动重生成",
+    "type": "bool",
+    "default": true,
+    "hint": "回复命中拒答话术且没有实质内容时，用加强指令重新请求一次并替换消息。"
+  },
+  "retry_on_deflection": {
+    "description": "回避自动重生成",
+    "type": "bool",
+    "default": true,
+    "hint": "用户提的是成人话题，而回复很短又没有实质描写（打太极、岔开话题）时，判定为回避并重新生成。"
+  },
+  "deflection_max_chars": {
+    "description": "回避判定字数上限",
+    "type": "int",
+    "default": 40,
+    "slider": {
+      "min": 10,
+      "max": 200,
+      "step": 5
+    },
+    "hint": "成人话题下，回复不超过这个字数且不含正文迹象才算回避。调低更保守。"
+  },
+  "max_retry": {
+    "description": "重生成次数",
+    "type": "int",
+    "default": 2,
+    "slider": {
+      "min": 1,
+      "max": 3,
+      "step": 1
+    },
+    "hint": "每次重生成都会多消耗一次模型调用。"
+  },
+  "refusal_threshold": {
+    "description": "拒答判定阈值",
+    "type": "int",
+    "default": 2,
+    "slider": {
+      "min": 2,
+      "max": 6,
+      "step": 1
+    },
+    "hint": "硬拒答计 2 分、软拒答计 1 分，达到阈值才重生成。调高更不容易误杀正常回复。"
+  },
+  "max_check_chars": {
+    "description": "拒答检测最大长度",
+    "type": "int",
+    "default": 400,
+    "hint": "超过这个字数的回复不再判为拒答，避免误杀长篇正文。"
+  },
+  "session_blacklist": {
+    "description": "不生效的会话",
+    "type": "list",
+    "items": {
+      "type": "string"
+    },
+    "default": [],
+    "hint": "每项一个 UMO，例如 aiocqhttp:GroupMessage:123456。"
+  }
+}
